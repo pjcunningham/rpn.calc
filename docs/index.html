@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RPN Calculator</title>
+    <script type="module" crossorigin src="./assets/index-B8Sp1hDl.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-CYKvVz9w.css">
+  </head>
+  <body class="skin-green mode-0">
+    <main>
+      <div class="topbar">
+        <div class="leftbar">
+          <span class="brand">RPN Calculator</span>
+        </div>
+        <div class="rightbar">
+          <button class="hamburger" id="menuToggle" aria-controls="mainMenu" aria-expanded="false" aria-label="Open menu" title="Menu">☰</button>
+          <nav class="menu" id="mainMenu">
+            <a href="help.html" target="_blank" rel="noopener">Help <span class="ext-icon">↗</span></a>
+            <a href="about.html">About</a>
+            <div class="menu-divider mobile-only"></div>
+            <div class="menu-group mobile-only">
+              <label class="menu-label" for="skinSelectMobile">Skin</label>
+              <select id="skinSelectMobile">
+                <option value="green">Green</option>
+                <option value="amber">Amber</option>
+                <option value="win31">Windows 3.1</option>
+                <option value="apple">Apple (Modern)</option>
+                <option value="c64">Commodore 64</option>
+                <option value="bsod">BSOD</option>
+                <option value="nixie">USSR NIXIE</option>
+                <option value="sinclair">Sinclair LED</option>
+                <option value="hp48">HP-48SX LCD</option>
+                <option value="sonnet18">Sonnet 18 (Shakespeare)</option>
+              </select>
+            </div>
+            <div class="menu-group mobile-only">
+              <label class="menu-label">View</label>
+              <label class="switch menu-switch">
+                <input type="checkbox" id="viewToggleMobile" />
+                <span class="slider"></span>
+                <span class="view-label left">Horizontal</span>
+                <span class="view-label right">Vertical</span>
+              </label>
+            </div>
+          </nav>
+          <div class="skinpicker">
+            <span class="view-label">Skin:</span>
+            <select id="skinSelect">
+              <option value="green">Green</option>
+              <option value="amber">Amber</option>
+              <option value="win31">Windows 3.1</option>
+              <option value="apple">Apple (Modern)</option>
+              <option value="c64">Commodore 64</option>
+              <option value="bsod">BSOD</option>
+              <option value="nixie">USSR NIXIE</option>
+              <option value="sinclair">Sinclair LED</option>
+              <option value="hp48">HP-48SX LCD</option>
+              <option value="sonnet18">Sonnet 18 (Shakespeare)</option>
+            </select>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="viewToggle" />
+            <span class="slider"></span>
+            <span class="view-label left">Horizontal</span>
+            <span class="view-label right">Vertical</span>
+          </label>
+        </div>
+      </div>
+
+      <div id="layout" class="layout horizontal">
+        <div id="leftPane" class="pane left">
+          <div class="stackbox">
+            <pre id="stack" class="console"></pre>
+            <div id="status" class="status"></div>
+          </div>
+          <input id="entry" class="input" placeholder="enter numbers or commands (e.g., tan, inverse, root, square). Press Enter to apply; Backspace to edit." autocomplete="off" />
+        </div>
+
+        <div id="rightPane" class="pane right">
+          <div class="keypad">
+            <div class="row">
+              <button class="btn wide" id="modeToggle" type="button">Mode: Basic</button>
+            </div>
+            <div class="row">
+              <button class="btn" id="b7" type="button">7</button>
+              <button class="btn" id="b8" type="button">8</button>
+              <button class="btn" id="b9" type="button">9</button>
+              <button class="btn op" id="bdiv" type="button">÷</button>
+            </div>
+            <div class="row">
+              <button class="btn" id="b4" type="button">4</button>
+              <button class="btn" id="b5" type="button">5</button>
+              <button class="btn" id="b6" type="button">6</button>
+              <button class="btn op" id="bmul" type="button">×</button>
+            </div>
+            <div class="row">
+              <button class="btn" id="b1" type="button">1</button>
+              <button class="btn" id="b2" type="button">2</button>
+              <button class="btn" id="b3" type="button">3</button>
+              <button class="btn op" id="bsub" type="button">−</button>
+            </div>
+            <div class="row quarters">
+              <button class="btn" id="b0" type="button">0</button>
+              <button class="btn" id="benter" type="button">Enter</button>
+              <div class="qgroup">
+                <button class="btn" id="bneg" type="button">±</button>
+                <button class="btn" id="bdot" type="button">.</button>
+              </div>
+              <button class="btn op" id="badd" type="button">+</button>
+            </div>
+            <div class="row">
+              <button class="btn" id="bswap" type="button">Swap</button>
+              <button class="btn" id="bdrop" type="button">Drop</button>
+              <button class="btn" id="bclear" type="button">Clear</button>
+              <button class="btn shrink angle-only" id="angleToggle" type="button">Angle: RAD</button>
+            </div>
+
+            <div id="sci" class="hidden">
+              <div class="row">
+                <button class="btn op" id="bsin" type="button">sin</button>
+                <button class="btn op" id="bcos" type="button">cos</button>
+                <button class="btn op" id="btan" type="button">tan</button>
+                <button class="btn op" id="bsinh" type="button">sinh</button>
+                <button class="btn op" id="bcosh" type="button">cosh</button>
+                <button class="btn op" id="btanh" type="button">tanh</button>
+              </div>
+              <div class="row">
+                <button class="btn op" id="basin" type="button"><span>sin</span><sup>−1</sup></button>
+                <button class="btn op" id="bacos" type="button"><span>cos</span><sup>−1</sup></button>
+                <button class="btn op" id="batan" type="button"><span>tan</span><sup>−1</sup></button>
+                <button class="btn op" id="basinh" type="button"><span>sinh</span><sup>−1</sup></button>
+                <button class="btn op" id="bacosh" type="button"><span>cosh</span><sup>−1</sup></button>
+                <button class="btn op" id="batanh" type="button"><span>tanh</span><sup>−1</sup></button>
+              </div>
+              <div class="row">
+                <button class="btn op" id="bsqrt" type="button">√</button>
+                <button class="btn op" id="bcbrt" type="button">∛</button>
+                <button class="btn op" id="bsq" type="button">x²</button>
+                <button class="btn op" id="bcube" type="button">x³</button>
+              </div>
+              <div class="row">
+                <button class="btn op" id="bln" type="button">ln</button>
+                <button class="btn op" id="blog10" type="button"><span>log</span><sub>10</sub><span>x</span></button>
+                <button class="btn op" id="bexp" type="button"><span>e</span><sup>x</sup></button>
+                <button class="btn op" id="binv" type="button">1/x</button>
+              </div>
+              <div class="row">
+                <button class="btn op" id="bpi" type="button">π</button>
+                <button class="btn op" id="be" type="button">e</button>
+                <button class="btn op" id="bfact" type="button">x!</button>
+              </div>
+              <div class="row">
+                <button class="btn op" id="bpow" type="button"><span>y</span><sup>x</sup></button>
+                <button class="btn op" id="bnroot" type="button"><sup>x</sup>√y</button>
+              </div>
+            </div>
+
+            <div id="prog" class="hidden">
+              <div class="row">
+                <button class="btn op" id="band" type="button">AND</button>
+                <button class="btn op" id="bor" type="button">OR</button>
+                <button class="btn op" id="bxor" type="button">XOR</button>
+                <button class="btn op" id="bnot" type="button">NOT</button>
+              </div>
+              <div class="row">
+                <button class="btn op" id="bnor" type="button">NOR</button>
+                <button class="btn op" id="bnand" type="button">NAND</button>
+                <button class="btn op" id="bxnor" type="button">XNOR</button>
+              </div>
+              <div class="row">
+                <button class="btn op" id="bshl" type="button">&lt;&lt;</button>
+                <button class="btn op" id="bshr" type="button">&gt;&gt;</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+  </body>
+</html>
