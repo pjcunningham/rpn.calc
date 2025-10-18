@@ -36,7 +36,3 @@ exclude:
   - LICENSE
   - .gitignore
   - .gitattributes
-
-# Optional: If you later switch to serving the built site (dist/) on Pages,
-# you can set your Pages source to "/dist" in the repository settings,
-# or move dist to "/docs" and set that as the source. No changes here are required.

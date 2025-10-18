@@ -27,13 +27,13 @@ Build for production
 - pnpm build
 - npm run build
 
-The production build is emitted to the dist/ directory.
+The production build is emitted to the docs/ directory.
 
 Preview a production build locally
 - pnpm preview
 - npm run preview
 
-This serves the built site from dist/ at a local URL (typically http://localhost:4173/).
+This serves the built site from docs/ at a local URL (typically http://localhost:4173/).
 
 What you should see
 - Home page hosts a stacked RPN calculator with a green-on-black 1980s console aesthetic by default.
@@ -46,7 +46,7 @@ Project structure (key files)
 - src/app.js — All calculator logic and UI behavior
 - src/styles.css — Base styles and skins
 - package.json — Vite scripts
-- dist/ — Production build output (generated)
+- docs/ — Production build output (generated)
 
 Using the RPN calculator
 - Entry: Type a number in the entry field and press Enter to push it to the stack.
@@ -84,8 +84,8 @@ Implementation notes
 - Fully static site: no server-side code is required. Everything runs in the browser.
 - Vite is used for:
   - Fast local dev server with HMR
-  - Building and optimizing assets into dist/
-- Assets are referenced relative to the project root. After build, files in dist/ can be hosted on any static host (GitHub Pages, Netlify, Vercel static, S3, etc.).
+  - Building and optimizing assets into docs/
+- Assets are referenced relative to the project root. After build, files in docs/ can be hosted on any static host (GitHub Pages, Netlify, Vercel static, S3, etc.).
 
 Links (dev server)
 - http://localhost:5173/ (Home)
