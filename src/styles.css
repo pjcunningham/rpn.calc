@@ -73,6 +73,10 @@ body.mode-1 .angle-only { display: inline-block; }
 .switch input:checked + .slider::before { transform: translateX(24px); }
 .switch .view-label { font-size: 0.85rem; opacity: 0.9; }
 .switch .view-label.right { margin-left: 0.25rem; }
+/* Disabled state visuals for view switch */
+.switch input:disabled + .slider { opacity: 0.5; filter: grayscale(30%); }
+.switch.disabled { opacity: 0.6; cursor: not-allowed; }
+.switch.disabled .slider { cursor: not-allowed; }
 .skinpicker label { font-size: 0.85rem; opacity: 0.9; margin-right: 0.25rem; }
 .skinpicker select { background: var(--console-bg); color: var(--fg); border: 1px solid var(--accent); box-shadow: inset 0 0 6px var(--shadow); padding: 0.25rem 0.5rem; }
 
@@ -157,3 +161,26 @@ body.skin-hp48 .hp-px.on { background: #0c1a12; opacity: 0.95; }
 /* Ensure panes don't exceed container and center content within each pane if space allows */
 .layout.vertical .pane { flex: 0 0 50%; max-width: 50%; }
 #rightPane, #leftPane { margin-inline: 0; }
+
+/* Responsive hamburger menu for small screens */
+.hamburger { display: none; align-items: center; justify-content: center; width: 36px; height: 32px; font-size: 20px; line-height: 1; background: color-mix(in oklab, var(--bg), black 20%); color: var(--fg); border: 1px solid var(--accent); box-shadow: 0 0 6px var(--shadow); cursor: pointer; }
+.hamburger:hover { background: color-mix(in oklab, var(--bg), black 10%); }
+
+.rightbar { position: relative; }
+
+/* Mobile-only blocks inside menu are hidden by default (shown at <=700px) */
+.topbar .menu .mobile-only { display: none; }
+
+@media (max-width: 700px) {
+  .hamburger { display: inline-flex; }
+  /* Hide inline menu by default on small screens */
+  .topbar .menu { display: none; position: absolute; top: calc(100% + 6px); right: 0; flex-direction: column; gap: 0.5rem; background: color-mix(in oklab, var(--console-bg), white 6%); border: 1px solid var(--accent); box-shadow: 0 6px 12px rgba(0,0,0,0.35); padding: 0.5rem 0.75rem; z-index: 50; min-width: 220px; }
+  .topbar .menu a { padding: 0.25rem 0; }
+  .topbar .menu.open { display: flex; }
+  /* Show mobile-only controls inside menu; hide desktop controls */
+  .topbar .menu .mobile-only { display: block; }
+  .topbar .menu .menu-group { display: flex; flex-direction: column; gap: 0.35rem; padding-top: 0.35rem; }
+  .topbar .menu .menu-divider { height: 1px; background: var(--border); margin: 0.25rem 0 0.25rem; }
+  .topbar .menu .menu-label { font-size: 0.85rem; opacity: 0.9; }
+  .rightbar .skinpicker, .rightbar > .switch { display: none; }
+}

@@ -9,7 +9,9 @@
   const modeToggle = document.getElementById('modeToggle');
   const layoutBox = document.getElementById('layout');
   const viewToggle = document.getElementById('viewToggle');
+  const viewToggleMobile = document.getElementById('viewToggleMobile');
   const skinSelect = document.getElementById('skinSelect');
+  const skinSelectMobile = document.getElementById('skinSelectMobile');
   const angleToggle = document.getElementById('angleToggle');
 
   // Formatting helper for display
@@ -617,7 +619,105 @@
       localStorage.setItem('rpn.view', vertical ? 'vertical' : 'horizontal');
     } catch {}
   }
-  viewToggle?.addEventListener('change', ()=>{ updateView(); saveView(); });
+
+  // Helper to close the hamburger menu after a selection on mobile
+  function closeMobileMenuIfAny(){
+    const menu = document.getElementById('mainMenu');
+    const btn = document.getElementById('menuToggle');
+    if (menu && menu.classList.contains('open')){
+      menu.classList.remove('open');
+      if (btn){
+        btn.setAttribute('aria-expanded','false');
+        btn.setAttribute('aria-label','Open menu');
+      }
+    }
+  }
+
+  // Responsive: lock view to Horizontal at Laptop breakpoint or lower
+  const LAPTOP_BP = 1024; // px
+  let forcedHorizontal = false;
+
+  function setSwitchDisabled(disabled){
+    const desktopLabel = document.querySelector('label.switch:not(.menu-switch)');
+    const mobileLabel = document.querySelector('label.switch.menu-switch');
+    if (viewToggle){
+      viewToggle.disabled = disabled;
+    }
+    if (viewToggleMobile){
+      viewToggleMobile.disabled = disabled;
+    }
+    if (desktopLabel){
+      desktopLabel.classList.toggle('disabled', disabled);
+      if (disabled) desktopLabel.setAttribute('title','View is locked to Horizontal on laptop/smaller screens');
+      else desktopLabel.removeAttribute('title');
+    }
+    if (mobileLabel){
+      mobileLabel.classList.toggle('disabled', disabled);
+      if (disabled) mobileLabel.setAttribute('title','View is locked to Horizontal on laptop/smaller screens');
+      else mobileLabel.removeAttribute('title');
+    }
+  }
+
+  function forceHorizontalNow(){
+    forcedHorizontal = true;
+    if (viewToggle) viewToggle.checked = false;
+    if (viewToggleMobile) viewToggleMobile.checked = false;
+    setSwitchDisabled(true);
+    updateView(); // do NOT save forced state to localStorage
+  }
+
+  function releaseForcedView(){
+    forcedHorizontal = false;
+    setSwitchDisabled(false);
+    // Restore saved preference if any
+    let saved = 'horizontal';
+    try {
+      const v = localStorage.getItem('rpn.view');
+      if (v === 'vertical' || v === '1' || v === 'true') saved = 'vertical';
+      else saved = 'horizontal';
+    } catch {}
+    const wantVertical = (saved === 'vertical');
+    if (viewToggle) viewToggle.checked = wantVertical;
+    if (viewToggleMobile) viewToggleMobile.checked = wantVertical;
+    updateView();
+  }
+
+  function applyResponsiveViewLock(){
+    if (window.innerWidth <= LAPTOP_BP){
+      if (!forcedHorizontal) forceHorizontalNow();
+    } else {
+      if (forcedHorizontal) releaseForcedView();
+    }
+  }
+
+  viewToggle?.addEventListener('change', ()=>{
+    if (forcedHorizontal){
+      // Revert any attempt to change while locked
+      if (viewToggle) viewToggle.checked = false;
+      if (viewToggleMobile) viewToggleMobile.checked = false;
+      closeMobileMenuIfAny();
+      return;
+    }
+    if (viewToggleMobile) viewToggleMobile.checked = !!viewToggle.checked;
+    updateView(); saveView();
+    closeMobileMenuIfAny();
+  });
+
+  // Mirror listener for mobile view toggle
+  viewToggleMobile?.addEventListener('change', ()=>{
+    if (forcedHorizontal){
+      if (viewToggle) viewToggle.checked = false;
+      if (viewToggleMobile) viewToggleMobile.checked = false;
+      closeMobileMenuIfAny();
+      return;
+    }
+    if (viewToggle) viewToggle.checked = !!viewToggleMobile.checked;
+    updateView(); saveView();
+    closeMobileMenuIfAny();
+  });
+
+  // Apply the lock on startup and keep in sync on resize
+  window.addEventListener('resize', applyResponsiveViewLock);
 
   // Keyboard support for Basic and commands
   document.addEventListener('keydown', (e)=>{
@@ -661,7 +761,21 @@
     const s = allowed.has(val) ? val : 'green';
     applySkin(s);
     saveSkin(s);
+    if (skinSelectMobile) skinSelectMobile.value = s;
     render();
+    closeMobileMenuIfAny();
+  });
+
+  // Mirror listener for mobile skin select
+  skinSelectMobile?.addEventListener('change', ()=>{
+    const allowed = new Set(['green','amber','win31','apple','c64','bsod','nixie','sinclair','hp48','sonnet18']);
+    const val = (skinSelectMobile.value||'').toLowerCase();
+    const s = allowed.has(val) ? val : 'green';
+    applySkin(s);
+    saveSkin(s);
+    if (skinSelect) skinSelect.value = s;
+    render();
+    closeMobileMenuIfAny();
   });
 
   // Angle toggle button handling (cycle RAD/DEG/GRAD)
@@ -688,6 +802,7 @@
     } else if (v === 'horizontal' || v === '0' || v === 'false') {
       if (viewToggle) viewToggle.checked = false;
     }
+    if (viewToggleMobile) viewToggleMobile.checked = !!(viewToggle && viewToggle.checked);
   } catch {}
   let skin = 'green';
   try {
@@ -697,6 +812,7 @@
   } catch {}
   applySkin(skin);
   if (skinSelect) skinSelect.value = skin;
+  if (skinSelectMobile) skinSelectMobile.value = skin;
 
   // Load saved angle mode
   try {
@@ -706,6 +822,41 @@
 
   updateMode();
   updateView();
+  applyResponsiveViewLock();
   render();
   entry?.focus();
+})();
+
+
+// Mobile hamburger menu toggle for small screens
+(() => {
+  const btn = document.getElementById('menuToggle');
+  const menu = document.getElementById('mainMenu');
+  if (!btn || !menu) return;
+  const BREAKPOINT = 700;
+  const closeMenu = () => {
+    menu.classList.remove('open');
+    btn.setAttribute('aria-expanded', 'false');
+    btn.setAttribute('aria-label', 'Open menu');
+  };
+  const openMenu = () => {
+    menu.classList.add('open');
+    btn.setAttribute('aria-expanded', 'true');
+    btn.setAttribute('aria-label', 'Close menu');
+  };
+  btn.addEventListener('click', () => {
+    if (menu.classList.contains('open')) closeMenu(); else openMenu();
+  });
+  document.addEventListener('click', (e) => {
+    if (!menu.classList.contains('open')) return;
+    const t = e.target;
+    if (t === btn || btn.contains(t) || menu.contains(t)) return;
+    closeMenu();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeMenu();
+  });
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > BREAKPOINT) closeMenu();
+  });
 })();

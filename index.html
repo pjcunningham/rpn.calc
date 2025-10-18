@@ -13,9 +13,35 @@
           <span class="brand">RPN Calculator</span>
         </div>
         <div class="rightbar">
-          <nav class="menu">
+          <button class="hamburger" id="menuToggle" aria-controls="mainMenu" aria-expanded="false" aria-label="Open menu" title="Menu">☰</button>
+          <nav class="menu" id="mainMenu">
             <a href="help.html" target="_blank" rel="noopener">Help <span class="ext-icon">↗</span></a>
             <a href="about.html">About</a>
+            <div class="menu-divider mobile-only"></div>
+            <div class="menu-group mobile-only">
+              <label class="menu-label" for="skinSelectMobile">Skin</label>
+              <select id="skinSelectMobile">
+                <option value="green">Green</option>
+                <option value="amber">Amber</option>
+                <option value="win31">Windows 3.1</option>
+                <option value="apple">Apple (Modern)</option>
+                <option value="c64">Commodore 64</option>
+                <option value="bsod">BSOD</option>
+                <option value="nixie">USSR NIXIE</option>
+                <option value="sinclair">Sinclair LED</option>
+                <option value="hp48">HP-48SX LCD</option>
+                <option value="sonnet18">Sonnet 18 (Shakespeare)</option>
+              </select>
+            </div>
+            <div class="menu-group mobile-only">
+              <label class="menu-label">View</label>
+              <label class="switch menu-switch">
+                <input type="checkbox" id="viewToggleMobile" />
+                <span class="slider"></span>
+                <span class="view-label left">Horizontal</span>
+                <span class="view-label right">Vertical</span>
+              </label>
+            </div>
           </nav>
           <div class="skinpicker">
             <span class="view-label">Skin:</span>
