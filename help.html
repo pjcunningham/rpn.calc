@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Help — RPN Calculator</title>
+    <link rel="stylesheet" href="/src/styles.css" />
+  </head>
+  <body>
+    <main style="padding: 1rem;">
+      <h2>RPN Calculator Help</h2>
+      <p>This calculator uses Reverse Polish Notation (RPN). Enter numbers, then apply operations. The stack shows the bottom at the top and X (top of stack) at the bottom, HP-style.</p>
+
+      <h3>Basics</h3>
+      <ul>
+        <li>Type a number into the entry field and press Enter to push it to the stack.</li>
+        <li>Binary ops (+, −, ×, ÷) operate on Y and X (the top two stack values) and push the result.</li>
+        <li>Stack ops: Swap (swap top two), Drop (remove X), Clear (clear stack and entry).</li>
+        <li>Keyboard: Enter pushes or runs a command; +, -, *, / perform arithmetic on the stack.</li>
+      </ul>
+
+      <h3>Modes</h3>
+      <ul>
+        <li><b>Basic</b>: +, −, ×, ÷, Swap, Drop, Clear.</li>
+        <li><b>Scientific</b>: sin, cos, tan, sinh, cosh, tanh, sin⁻¹, cos⁻¹, tan⁻¹, sinh⁻¹, cosh⁻¹, tanh⁻¹, ln, log10, eˣ, sqrt, ∛x, x², x³, 1/x, y^x, x√y, x!. Angle mode button (RAD/DEG/GRAD) on the keypad (visible only in Scientific mode) affects circular trig input and inverse circular trig output (default RAD).</li>
+        <li><b>Programmer</b>: 32-bit integer ops: AND, OR, XOR, NOT, NOR, NAND, XNOR, SHL (&laquo;&laquo;), SHR (&raquo;&raquo;).</li>
+      </ul>
+
+      <h3>Commands in the entry</h3>
+      <p>You can also type command names instead of numbers and press Enter to execute them.</p>
+      <ul>
+        <li><b>Basic</b>: +, -, *, /, swap, drop, clear, enter</li>
+        <li><span>Word aliases: plus/add/addition, minus/subtract/subtraction, times/multiply/multiplication, divide/division/over</span></li>
+        <li><b>Scientific</b>: sin, cos, tan, sinh, cosh, tanh, asin, acos, atan, asinh, acosh, atanh, ln, log, log10, exp, sqrt/root, cbrt/cube root/cuberoot/∛, inverse/inv/1/x/recip/reciprocal, square/sq/x^2, cube/cubed/x^3/x³, pow/^/y^x, nroot/nthroot/rootn/xrooty/x√y, factorial/fact/!/n!/x!</li>
+        <li><b>Programmer</b>: and/&amp; , or/| , xor , not/~ , nor , nand , xnor , shl/&laquo;&laquo; , shr/&raquo;&raquo;</li>
+        <li><b>Angle</b>: deg (switch to degrees), rad (switch to radians), grad (switch to gradians)</li>
+      </ul>
+
+      <h3>View modes</h3>
+      <ul>
+        <li>Horizontal: single-column layout (default).</li>
+        <li>Vertical: two columns split 50/50; left shows stack and entry (entry at the bottom), right shows buttons.</li>
+      </ul>
+
+      <h3>Skins</h3>
+      <ul>
+        <li>Use the Skin dropdown in the top bar to switch between these looks:</li>
+        <li>Green (classic CRT)</li>
+        <li>Amber (1980s amber phosphor)</li>
+        <li>Windows 3.1 (light gray, navy accents)</li>
+        <li>Apple (Modern) — light, clean, blue accents</li>
+        <li>Commodore 64 (blue background, light blue text)</li>
+        <li>BSOD (blue screen, white text)</li>
+        <li>USSR NIXIE (1970s Nixie tube orange glow)</li>
+        <li>Sinclair LED (early Sinclair Cambridge LED)</li>
+        <li>HP-48SX LCD (dot-matrix green/gray LCD)</li>
+        <li>Sonnet 18 (Shakespeare parchment &amp; ink)</li>
+        <li>Your selected Skin is remembered via localStorage (key: rpn.skin).</li>
+      </ul>
+
+      <h3>Tips</h3>
+      <ul>
+        <li>Use y^x for powers: push y, then x, then press y^x.</li>
+        <li>Domain checks apply (e.g., sqrt of negative, ln of non-positive, asin/acos outside [-1,1]) and show a brief status message.</li>
+        <li>Programmer ops coerce values to 32-bit signed integers; shift counts use b &amp; 31.</li>
+        <li>Your selected Mode, View, and Skin are remembered between sessions using localStorage (keys: rpn.mode, rpn.view, rpn.skin).</li>
+      </ul>
+
+      <p><a href="index.html">Back to Home</a></p>
+    </main>
+    <script>
+      (function(){
+        const body = document.body;
+        const classes = ['skin-green','skin-amber','skin-win31','skin-apple','skin-c64','skin-bsod','skin-nixie','skin-sinclair','skin-hp48','skin-sonnet18'];
+        try { body.classList.remove(...classes); } catch {}
+        let skin = 'green';
+        try {
+          const s = (localStorage.getItem('rpn.skin')||'').toLowerCase();
+          const allowed = new Set(['green','amber','win31','apple','c64','bsod','nixie','sinclair','hp48','sonnet18']);
+          if (allowed.has(s)) skin = s;
+        } catch {}
+        const map = { green:'skin-green', amber:'skin-amber', win31:'skin-win31', apple:'skin-apple', c64:'skin-c64', bsod:'skin-bsod', nixie:'skin-nixie', sinclair:'skin-sinclair', hp48:'skin-hp48', sonnet18:'skin-sonnet18' };
+        body.classList.add(map[skin]||'skin-green');
+      })();
+    </script>
+  </body>
+</html>
