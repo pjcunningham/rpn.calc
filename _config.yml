@@ -1,0 +1,42 @@
+# GitHub Pages / Jekyll configuration for this static Vite HTML/JS site
+# Notes:
+# - This site is fully static (no Jekyll templating). We keep Jekyll from
+#   applying layouts and from processing dev/build artifacts.
+# - HTML files reference assets with root-absolute paths (e.g. /src/styles.css)
+#   which work for local dev (Vite) and for root-hosted deployments. If you use
+#   GitHub Project Pages (which serves under /<repo-name>/), you may want to
+#   adjust asset paths or host with a custom domain so "/" resolves to your root.
+
+# Do not apply any theme/layouts automatically
+theme: null
+
+# Keep HTML files unthemed and unprocessed by default
+defaults:
+  - scope:
+      path: ""
+      types: ["html"]
+    values:
+      layout: null
+
+# Jekyll settings
+markdown: kramdown
+kramdown:
+  input: GFM
+plugins: []
+
+# Exclude development/build artifacts from the Pages publish set
+exclude:
+  - node_modules
+  - pnpm-lock.yaml
+  - package.json
+  - package-lock.json
+  - yarn.lock
+  - vite.config.*
+  - README.md
+  - LICENSE
+  - .gitignore
+  - .gitattributes
+
+# Optional: If you later switch to serving the built site (dist/) on Pages,
+# you can set your Pages source to "/dist" in the repository settings,
+# or move dist to "/docs" and set that as the source. No changes here are required.
