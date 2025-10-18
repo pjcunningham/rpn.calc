@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About — RPN Calculator</title>
+    <link rel="stylesheet" href="/src/styles.css" />
+  </head>
+  <body>
+    <main style="padding: 1rem;">
+      <h2>About this calculator</h2>
+      <p>This RPN calculator is built with a static site (Vite + Vanilla JS) using client-side logic in /src/app.js, and styles in /src/styles.css.</p>
+      <p>The majority of the code was written by JUNIE AI (an autonomous programmer by JetBrains), with iterative guidance and requirements provided by the project owner.</p>
+      <p>Source code: <a href="https://github.com/pjcunningham/rpn.calc">github.com/pjcunningham/rpn.calc</a></p>
+
+      <h3>Skins</h3>
+      <p>This app includes multiple visual skins you can pick from the top-right Skin menu:</p>
+      <ul>
+        <li>Green (classic CRT)</li>
+        <li>Amber (1980s amber phosphor)</li>
+        <li>Windows 3.1 (light gray, navy accents)</li>
+        <li>Apple (Modern) — light, clean, blue accents</li>
+        <li>Commodore 64 (blue background, light blue text)</li>
+        <li>BSOD (blue screen, white text)</li>
+        <li>USSR NIXIE (1970s Nixie tube orange glow)</li>
+        <li>Sinclair LED (early Sinclair Cambridge LED)</li>
+        <li>HP-48SX LCD (dot-matrix green/gray LCD)</li>
+        <li>Sonnet 18 (Shakespeare parchment &amp; ink)</li>
+      </ul>
+
+      <p><a href="index.html">Back to Home</a></p>
+    </main>
+    <script>
+      (function(){
+        const body = document.body;
+        const classes = ['skin-green','skin-amber','skin-win31','skin-apple','skin-c64','skin-bsod','skin-nixie','skin-sinclair','skin-hp48','skin-sonnet18'];
+        try { body.classList.remove(...classes); } catch {}
+        let skin = 'green';
+        try {
+          const s = (localStorage.getItem('rpn.skin')||'').toLowerCase();
+          const allowed = new Set(['green','amber','win31','apple','c64','bsod','nixie','sinclair','hp48','sonnet18']);
+          if (allowed.has(s)) skin = s;
+        } catch {}
+        const map = { green:'skin-green', amber:'skin-amber', win31:'skin-win31', apple:'skin-apple', c64:'skin-c64', bsod:'skin-bsod', nixie:'skin-nixie', sinclair:'skin-sinclair', hp48:'skin-hp48', sonnet18:'skin-sonnet18' };
+        body.classList.add(map[skin]||'skin-green');
+      })();
+    </script>
+  </body>
+</html>
