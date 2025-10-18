@@ -140,3 +140,20 @@ body.skin-hp48 .hp-px.on { background: #0c1a12; opacity: 0.95; }
     .layout.horizontal .row { margin: 0.2rem 0; }
     .layout.horizontal .console { min-height: 110px; }
 }
+
+/* Responsive constraints to prevent over-stretching on wide screens */
+#layout { width: 100%; max-width: 1100px; margin-inline: auto; }
+/* Horizontal view is a single column; keep it narrower for readability */
+#layout.horizontal { max-width: 820px; }
+/* Vertical view has two panes; allow a bit more width but still cap it */
+#layout.vertical { max-width: 1100px; }
+
+/* At ultra-wide sizes, slightly tighten to avoid giant buttons */
+@media (min-width: 1600px) {
+  #layout.horizontal { max-width: 760px; }
+  #layout.vertical { max-width: 1000px; }
+}
+
+/* Ensure panes don't exceed container and center content within each pane if space allows */
+.layout.vertical .pane { flex: 0 0 50%; max-width: 50%; }
+#rightPane, #leftPane { margin-inline: 0; }
